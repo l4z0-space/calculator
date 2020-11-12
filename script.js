@@ -15,8 +15,14 @@ class Calculator {
     }
 
     appendNumber = (number) => {
-        console.log(number);
-        this.expression1 =  this.expression1.concat(number.toString())
+        const symbols = "+-*÷."
+        if(symbols.includes(number) && 
+           symbols.includes(this.expression1[this.expression1.length -1])){
+            console.log("Not valid");
+        }
+        else{
+            this.expression1 =  this.expression1.concat(number.toString())
+        }
     }
 
     updateDisplay = () => {
@@ -40,11 +46,43 @@ class Calculator {
         console.log(this.symbols);
     }
 
+    divOrMul = () => {
+        
+        /*
+
+         1+4*1
+        [1,4,1]
+        [+, *]
+        > If pos of * is 1, then numbers at 1 and 2 get
+        multiplied then removed and replaced, and * removed
+
+        */
+       // HANDLE MULTIPLICATION
+       var posM = this.symbols.indexOf("*")
+        while(posM!==-1){
+            const currMult = parseFloat(this.numbers[posM]) 
+                           * parseFloat(this.numbers[posM+1])
+            this.symbols.splice(posM, 1)
+            this.numbers.splice(posM, 2, currMult)
+            posM = this.symbols.indexOf("*")
+        }
+
+        // HANDLE DIVISION
+        var posD = this.symbols.indexOf("÷")
+        while(posD!==-1){
+            const currMult = parseFloat(this.numbers[posD]) 
+                           / parseFloat(this.numbers[posD+1])
+            this.symbols.splice(posD, 1)
+            this.numbers.splice(posD, 2, currMult)
+            posD = this.symbols.indexOf("÷")
+        }
+    }
+
     calculate = () => {
         this.separateOps()
         this.expression2= this.expression1
         this.expression1 = this.result
-        this.result = parseFloat(this.numbers[0])
+        
         console.log(this.result);
         var itS = 0
         var itN = 0
@@ -55,6 +93,8 @@ class Calculator {
                 itS += 1
             }
         }
+        this.divOrMul()
+        this.result = parseFloat(this.numbers[0])
         console.log(this.result);
         while(itS<this.symbols.length){
             const symbol = this.symbols[itS]
