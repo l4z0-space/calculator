@@ -22,7 +22,6 @@ class Calculator {
     updateDisplay = () => {
         this.currentElement[0].textContent = this.expression1
         this.previousElement[0].textContent = this.expression2
-
     }
 
     delete = () => {
@@ -32,40 +31,44 @@ class Calculator {
 
     separateOps = () => {
         this.numbers = this.expression1.split(new RegExp('[-+()*÷ ]', 'g'))
+                                       .filter(num => num)
+        // Get the symbols and make sure we have only the valid ones
         this.symbols = this.expression1.split(new RegExp('[ 0123456789]', 'g'))
-        
         this.symbols = this.symbols.filter(symbol => "-+()*÷".includes(symbol))
                                    .filter(s => s)
-
         console.log(this.numbers);
         console.log(this.symbols);
     }
 
     calculate = () => {
-        
         this.separateOps()
-
         this.expression2= this.expression1
         this.expression1 = this.result
-
         this.result = parseFloat(this.numbers[0])
-        const opIt = 0
-        
-
-        var it = 0
-        while(it<this.symbols.length){
-            const symbol = this.symbols[it]
-            const nextNum = parseFloat(this.numbers[it+1])
+        console.log(this.result);
+        var itS = 0
+        var itN = 0
+        // If expression starts with '-', ex -1+4=3
+        if ( this.symbols.length === this.numbers.length){
+            if(this.symbols[0] === '-'){
+                this.result *= -1
+                itS += 1
+            }
+        }
+        console.log(this.result);
+        while(itS<this.symbols.length){
+            const symbol = this.symbols[itS]
+            const nextNum = parseFloat(this.numbers[itN+1])
             if (symbol === '+'){
                 this.result += nextNum
             }
             else if(symbol === '-'){
                 this.result -= nextNum
             }
-    
-            it += 1
+            itS += 1
+            itN += 1
         }
-
+        console.log(this.result);
         this.expression1 = this.result.toString()
         this.updateDisplay()
     }
