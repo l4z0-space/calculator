@@ -30,25 +30,43 @@ class Calculator {
         this.updateDisplay()
     }
 
+    separateOps = () => {
+        this.numbers = this.expression1.split(new RegExp('[-+()*÷ ]', 'g'))
+        this.symbols = this.expression1.split(new RegExp('[ 0123456789]', 'g'))
+        
+        this.symbols = this.symbols.filter(symbol => "-+()*÷".includes(symbol))
+                                   .filter(s => s)
 
+        console.log(this.numbers);
+        console.log(this.symbols);
+    }
 
     calculate = () => {
         
-        this.numbers = this.expression1.split(new RegExp('[-+()*÷ ]', 'g'))
-        this.symbols = this.expression1.split(new RegExp('[0123456789 ]', 'g'))
-        console.log(this.numbers);
-        console.log(this.symbols);
+        this.separateOps()
+
         this.expression2= this.expression1
         this.expression1 = this.result
 
-        this.result = 0
-
-        this.numbers.forEach(strNum => {
-            const num = parseFloat(strNum)
-            this.result += num
-        });
+        this.result = parseFloat(this.numbers[0])
+        const opIt = 0
         
-        this.expression1 = this.result
+
+        var it = 0
+        while(it<this.symbols.length){
+            const symbol = this.symbols[it]
+            const nextNum = parseFloat(this.numbers[it+1])
+            if (symbol === '+'){
+                this.result += nextNum
+            }
+            else if(symbol === '-'){
+                this.result -= nextNum
+            }
+    
+            it += 1
+        }
+
+        this.expression1 = this.result.toString()
         this.updateDisplay()
     }
 }
