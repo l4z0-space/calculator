@@ -47,16 +47,10 @@ class Calculator {
     }
 
     divOrMul = () => {
+
+        // > If pos of * is i, then numbers at i and i+1 get
+        // multiplied then removed and replaced, and * removed
         
-        /*
-
-         1+4*1
-        [1,4,1]
-        [+, *]
-        > If pos of * is 1, then numbers at 1 and 2 get
-        multiplied then removed and replaced, and * removed
-
-        */
        // HANDLE MULTIPLICATION
        var posM = this.symbols.indexOf("*")
         while(posM!==-1){
@@ -83,19 +77,16 @@ class Calculator {
         this.expression2= this.expression1
         this.expression1 = this.result
         
-        console.log(this.result);
         var itS = 0
         var itN = 0
+        
         // If expression starts with '-', ex -1+4=3
         if ( this.symbols.length === this.numbers.length){
-            if(this.symbols[0] === '-'){
-                this.result *= -1
-                itS += 1
-            }
+            this.numbers.unshift("0")
         }
         this.divOrMul()
         this.result = parseFloat(this.numbers[0])
-        console.log(this.result);
+      
         while(itS<this.symbols.length){
             const symbol = this.symbols[itS]
             const nextNum = parseFloat(this.numbers[itN+1])
@@ -108,7 +99,7 @@ class Calculator {
             itS += 1
             itN += 1
         }
-        console.log(this.result);
+        console.log("Result", this.result);
         this.expression1 = this.result.toString()
         this.updateDisplay()
     }
